@@ -1,0 +1,44 @@
+# ---------- .NET / C# ----------
+bin/
+obj/
+*.user
+*.suo
+*.rsuser
+TestResults/
+*.trx
+coverage*.xml
+
+# ---------- IDEs ----------
+# Visual Studio
+.vs/
+# JetBrains Rider
+.idea/
+# VS Code: ignore personal settings, keep shared project settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ---------- Node / frontend ----------
+node_modules/
+dist/
+coverage/
+*.log
+npm-debug.log*
+.vite/
+
+# ---------- Playwright ----------
+e2e/test-results/
+e2e/playwright-report/
+e2e/blob-report/
+e2e/playwright/.cache/
+
+# ---------- Secrets and local config ----------
+.env
+.env.*
+!.env.example
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
