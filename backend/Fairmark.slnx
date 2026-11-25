@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Fairmark.Api/Fairmark.Api.csproj" />
+    <Project Path="src/Fairmark.Application/Fairmark.Application.csproj" />
+    <Project Path="src/Fairmark.Domain/Fairmark.Domain.csproj" />
+    <Project Path="src/Fairmark.Infrastructure/Fairmark.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Fairmark.IntegrationTests/Fairmark.IntegrationTests.csproj" />
+    <Project Path="tests/Fairmark.UnitTests/Fairmark.UnitTests.csproj" />
+  </Folder>
+</Solution>
