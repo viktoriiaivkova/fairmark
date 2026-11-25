@@ -1,0 +1,8 @@
+@Fairmark.Api_HostAddress = http://localhost:5188
+
+### Health check
+GET {{Fairmark.Api_HostAddress}}/health
+
+### Unknown URL returns 404 as ProblemDetails
+GET {{Fairmark.Api_HostAddress}}/api/does-not-exist
+Accept: application/json

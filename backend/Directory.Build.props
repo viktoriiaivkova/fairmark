@@ -1,0 +1,10 @@
+<Project>
+
+  <!-- Settings shared by every project under backend/. A project file only lists what is specific to it. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fairmark.Domain\Fairmark.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

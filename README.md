@@ -33,7 +33,42 @@ e2e/        Playwright end-to-end tests
 
 ## Getting started
 
-_Coming soon — local setup is added together with the solution skeleton (FM-22)._
+### Prerequisites
+
+- [.NET SDK 10](https://dotnet.microsoft.com/download/dotnet/10.0) — the exact version is pinned in `global.json`
+- [Node.js 22](https://nodejs.org/) (22.22.2 or later, see `frontend/.nvmrc`)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) — the integration tests start PostgreSQL in a container
+
+The local database for running the API (Docker Compose) is added in FM-45.
+
+### Backend (`backend/`)
+
+```bash
+cd backend
+dotnet build                               # build all projects
+dotnet test                                # unit + integration tests (Docker must be running)
+dotnet run --project src/Fairmark.Api      # API on http://localhost:5188
+```
+
+- Health check: `GET http://localhost:5188/health`
+- OpenAPI document (Development only): `http://localhost:5188/openapi/v1.json`
+- Sample requests for the VS Code REST Client: `src/Fairmark.Api/Fairmark.Api.http`
+
+### Frontend (`frontend/`)
+
+```bash
+cd frontend
+npm ci                 # install the exact versions from package-lock.json
+npm run dev            # dev server on http://localhost:5173
+npm run lint           # ESLint + Prettier check
+npm run format         # format all files with Prettier
+npm run typecheck      # TypeScript
+npm test               # Vitest (npm run test:watch for watch mode)
+npm run build          # production build into dist/
+```
+
+The dev server forwards every request under `/api` to the API on `http://localhost:5188`, so the
+web app and the API share one origin. To work on both, run the API and the dev server in two terminals.
 
 ## How this project is run
 

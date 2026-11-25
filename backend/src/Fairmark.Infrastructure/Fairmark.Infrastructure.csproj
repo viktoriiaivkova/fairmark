@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fairmark.Application\Fairmark.Application.csproj" />
+    <ProjectReference Include="..\Fairmark.Domain\Fairmark.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
