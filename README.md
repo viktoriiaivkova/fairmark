@@ -39,7 +39,40 @@ e2e/        Playwright end-to-end tests
 - [Node.js 22](https://nodejs.org/) (22.22.2 or later, see `frontend/.nvmrc`)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) — the integration tests start PostgreSQL in a container
 
-The local database for running the API (Docker Compose) is added in FM-45.
+### Local database
+
+PostgreSQL 18 runs in Docker (`docker-compose.yml`) on host port **5433**. Run these commands from the
+repository root.
+
+First time only:
+
+```bash
+cp .env.example .env    # PowerShell: Copy-Item .env.example .env
+# edit .env and choose your own POSTGRES_PASSWORD (letters and digits only)
+
+docker compose up -d --wait
+
+# The API reads its connection string from user secrets (Development). Use the values from .env:
+dotnet user-secrets set "ConnectionStrings:Default" "Host=127.0.0.1;Port=5433;Database=fairmark;Username=fairmark;Password=<your password>" --project backend/src/Fairmark.Api
+```
+
+Day to day:
+
+| Command | What it does |
+|---|---|
+| `docker compose up -d --wait` | Start the database and wait until it accepts connections |
+| `docker compose ps` | Show whether the database is running and healthy |
+| `docker compose down` | Stop the database; the data is kept in the `fairmark_db-data` volume |
+| `docker compose down -v` | Stop the database and **delete all data**; the next start creates an empty database |
+| `docker compose logs db` | Show the database log |
+| `docker compose exec db psql -U fairmark -d fairmark` | Open a `psql` session inside the container |
+
+With the database and the API running, `GET http://localhost:5188/health` returns
+`{"status":"Healthy","checks":{"database":"Healthy"}}`.
+
+If `/health` reports the database as `Unhealthy`, `docker compose logs db` shows why, for example
+`password authentication failed`: the password in user secrets differs from the one the database was
+created with. Values in `.env` are applied only when the volume is empty.
 
 ### Backend (`backend/`)
 
@@ -50,7 +83,7 @@ dotnet test                                # unit + integration tests (Docker mu
 dotnet run --project src/Fairmark.Api      # API on http://localhost:5188
 ```
 
-- Health check: `GET http://localhost:5188/health`
+- Health check: `GET http://localhost:5188/health` — JSON with the status of each check; 503 if the database is unreachable
 - OpenAPI document (Development only): `http://localhost:5188/openapi/v1.json`
 - Sample requests for the VS Code REST Client: `src/Fairmark.Api/Fairmark.Api.http`
 

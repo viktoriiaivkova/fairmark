@@ -1,5 +1,7 @@
 using Fairmark.Api.ErrorHandling;
+using Fairmark.Api.Health;
 using Fairmark.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    // JSON with the status of each check, e.g. {"status":"Healthy","checks":{"database":"Healthy"}}
+    ResponseWriter = HealthCheckResponseWriter.WriteAsync,
+});
 
 // Migrations are not applied on startup (ADR-002, section 4).
 app.Run();
