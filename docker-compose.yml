@@ -1,0 +1,29 @@
+# Local PostgreSQL for development (FM-45). Run the commands from the repository root:
+#   docker compose up -d --wait   start (waits until the database accepts connections)
+#   docker compose down           stop and remove the container; the data stays in the volume
+#   docker compose down -v        stop and delete the data (fresh, empty database on next start)
+name: fairmark
+
+services:
+  db:
+    # Same major version as the integration tests (Testcontainers, FM-22).
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env - see .env.example}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env - see .env.example}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env - see .env.example}
+    ports:
+      # Host port 5433, because 5432 is often taken by a locally installed PostgreSQL.
+      # Bound to 127.0.0.1, so the database is reachable only from this computer.
+      - "127.0.0.1:5433:5432"
+    volumes:
+      # PostgreSQL 18+ images keep their data under /var/lib/postgresql (not /var/lib/postgresql/data).
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  db-data:
